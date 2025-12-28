@@ -3,6 +3,7 @@
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+![Zustand](https://img.shields.io/badge/Zustand-State%20Management-764ABC?logo=react&logoColor=white&style=for-the-badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 This is the frontend repository for the **AI-Powered Quiz Application**. It provides a sleek, responsive user interface for generating quizzes via AI, managing user sessions, and visualizing quiz results.
@@ -24,11 +25,11 @@ This is the frontend repository for the **AI-Powered Quiz Application**. It prov
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [React.js](https://reactjs.org/) (v18)
+- **Framework**: [React.js](https://reactjs.org/) (v19)
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **State Management**: React Context API
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
 - **API Communication**: [Axios](https://axios-http.com/)
 
 ---
@@ -36,7 +37,7 @@ This is the frontend repository for the **AI-Powered Quiz Application**. It prov
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-- **Node.js**: (v16.0 or higher)
+- **Node.js**
 - **Backend Service**: You must have the [Backend API](https://github.com/ThilinaJayamal/AI-powerd-Quiz-App-Backend) running.
 
 ### 2. Installation
@@ -50,16 +51,7 @@ npm install
 
 ```
 
-### 3. Environment Setup
-
-Create a `.env` file in the root directory and point it to your backend URL:
-
-```env
-VITE_API_BASE_URL=http://localhost:8080/api
-
-```
-
-### 4. Run Development Server
+### 3. Run Development Server
 
 ```bash
 npm run dev
@@ -88,6 +80,9 @@ src/
 ├── context/       # Auth and Quiz state management
 ├── pages/         # View components (Home, Dashboard, QuizView)
 ├── services/      # API wrappers for backend communication
+├── store/         # State management
+├── lib/           # Axios Base API configurations
+├── utils/         # Time formater for timer
 └── App.jsx        # Main routing and entry point
 
 ```
