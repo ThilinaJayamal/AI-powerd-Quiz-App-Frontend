@@ -2,17 +2,19 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQuizStore } from '../store/quizStore';
 import QuizOption from '../components/QuizOption';
-import { MoveLeft, MoveRight } from 'lucide-react';
+import { MoveLeft, MoveRight, User } from 'lucide-react';
 import { formatTime } from '../utils/timeFormatter';
 import ResultCard from '../components/ResultCard';
+import PageLoader from '../components/PageLoader';
 
 function Quiz() {
     const { id } = useParams();
-    const { loadQuizById, quizById, setAnswers, attemptQuiz, result } = useQuizStore();
+    const { loadQuizById, quizById, setAnswers, attemptQuiz, result, isLoading } = useQuizStore();
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [time, setTime] = useState(0);
     const [submitted, setSubmitted] = useState(false); // Prevent double submit
+    const [hasAttemptedLoad, setHasAttemptedLoad] = useState(false);
     const intervalRef = useRef(null);
 
     const navigate = useNavigate();
@@ -23,7 +25,7 @@ function Quiz() {
     // Load quiz on mount
     useEffect(() => {
         if (id) {
-            loadQuizById(id);
+            loadQuizById(id).finally(() => setHasAttemptedLoad(true));
         }
     }, [id]);
 
@@ -66,11 +68,23 @@ function Quiz() {
         }
     }
 
-    if(!quizById){
+    // Show loading spinner while data is being fetched or before first load attempt
+    if(isLoading || !hasAttemptedLoad){
+        return <PageLoader text="Loading quiz..." />
+    }
+
+    // Show error only after loading is complete and quiz is not found
+    if(hasAttemptedLoad && !quizById){
         return(
-            <div className='text-red-600 min-h-screen p-20 flex flex-col gap-3 justify-center items-center'>
-                Sorry, you don't have access to this resource.
-                <button className='text-white cursor-pointer px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600' onClick={()=>navigate("/dashboard")}>Dashboard</button>
+            <div className='min-h-screen p-20 flex flex-col gap-3 justify-center items-center'>
+                <div className='text-center space-y-4'>
+                    <div className='text-6xl'>🔒</div>
+                    <h1 className='text-2xl font-semibold text-gray-800'>Access Denied</h1>
+                    <p className='text-red-600'>Sorry, you don't have access to this resource.</p>
+                    <button className='text-white cursor-pointer px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-600 transition-colors' onClick={()=>navigate("/dashboard")}>
+                        Go to Dashboard
+                    </button>
+                </div>
             </div>
         )
     }

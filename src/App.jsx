@@ -15,6 +15,7 @@ import SharedWithMe from './pages/SharedWithMe'
 import Quiz from './pages/Quiz'
 import QuizShare from './pages/QuizShare'
 import Profile from './pages/Profile'
+import PageLoader from './components/PageLoader'
 
 function App() {
 
@@ -25,12 +26,7 @@ function App() {
   }, [])
 
   if (isFetching) {
-    return (
-      <div className='w-full h-screen flex gap-3 flex-col items-center justify-center'>
-        <h1 className='text-4xl font-bold animate-pulse text-gray-900'>Quiz?<span className='text-blue-500'>Master</span></h1>
-        <p className='text-sm text-blue-500 border border-blue-500/30 bg-blue-200/40 px-4 py-1 rounded-full'>Please, wait a moment!</p>
-      </div>
-    )
+    return <PageLoader text="Initializing your experience..." />
   }
 
   return (

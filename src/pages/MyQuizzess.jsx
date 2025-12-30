@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react'
 import MyQuizDisplay from '../components/QuizDisplay'
 import { useQuizStore } from '../store/quizStore'
+import PageLoader from '../components/PageLoader'
 
 function MyQuizzess() {
-    const { myQuizzess, loadMyQuizzes } = useQuizStore();
+    const { myQuizzess, loadMyQuizzes, isLoading } = useQuizStore();
 
     console.log(myQuizzess)
     useEffect(() => {
         loadMyQuizzes();
     }, [])
+
+    if (isLoading) {
+        return <PageLoader text="Loading your quizzes..." />
+    }
 
     return (
         <div className='pt-20 bg-blue-50'>

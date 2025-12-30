@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { useQuizStore } from '../store/quizStore'
 import { useNavigate } from 'react-router-dom';
+import PageLoader from '../components/PageLoader'
 
 function MyAttempts() {
 
-  const { getMyAttempts, myAttempts } = useQuizStore();
+  const { getMyAttempts, myAttempts, isLoading } = useQuizStore();
   const navigate = useNavigate();
 
   const updatedAttempts = myAttempts?.sort((a, b) => b.id - a.id);
@@ -14,6 +15,10 @@ function MyAttempts() {
   }, [])
 
   console.log(myAttempts)
+
+  if (isLoading) {
+    return <PageLoader text="Loading your attempts..." />
+  }
 
   return (
     <div className='pt-20 bg-blue-50'>
