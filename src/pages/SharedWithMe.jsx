@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react'
 import MyQuizDisplay from '../components/QuizDisplay'
 import { useQuizStore } from '../store/quizStore'
+import PageLoader from '../components/PageLoader'
 
 function SharedWithMe() {
-  const { getQuizzesSharedWithMe, sharedWithMeQuizzes } = useQuizStore();
+  const { getQuizzesSharedWithMe, sharedWithMeQuizzes, isLoading } = useQuizStore();
 
   useEffect(() => {
     getQuizzesSharedWithMe();
   }, [])
+
+  if (isLoading) {
+    return <PageLoader text="Loading shared quizzes..." />
+  }
 
   return (
     <div className='pt-20 bg-blue-50'>
@@ -20,7 +25,7 @@ function SharedWithMe() {
               <MyQuizDisplay quiz={quiz} key={index} shared={false}/>
             ))
           }
-           {
+          {
             sharedWithMeQuizzes.length == 0 && <p>Sorry, you didn't have any quizzes shared with you.</p>
           }
         </div>

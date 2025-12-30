@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 export const useQuizStore = create((set, get) => ({
     isSaving: false,
     isGenerating: false,
+    isLoading: false,
     questions: [],
     analytics: null,
     myQuizzess: [],
@@ -107,26 +108,18 @@ export const useQuizStore = create((set, get) => ({
 
     loadMyQuizzes: async () => {
         try {
+            set({ isLoading: true })
             const { data } = await api.get("/quiz/all");
-            set({ myQuizzess: data })
+            set({ myQuizzess: data, isLoading: false })
         } catch (error) {
-            set({ myQuizzess: [] })
-            toast.error(error?.response.data || error?.message)
-        }
-    },
-
-    loadMyQuizzes: async () => {
-        try {
-            const { data } = await api.get("/quiz/all");
-            set({ myQuizzess: data })
-        } catch (error) {
-            set({ myQuizzess: [] })
+            set({ myQuizzess: [], isLoading: false })
             toast.error(error?.response.data || error?.message)
         }
     },
 
     loadQuizById: async (id) => {
         try {
+            set({ isLoading: true, quizById: null })
             const { data } = await api.get(`/quiz/${id}`);
             set({ quizById: data })
             const emptyAnswers = data?.questions?.map((question) => {
@@ -135,9 +128,9 @@ export const useQuizStore = create((set, get) => ({
                     answer: ""
                 }
             });
-            set({ answers: emptyAnswers });
+            set({ answers: emptyAnswers, isLoading: false });
         } catch (error) {
-            set({ quizById: null })
+            set({ quizById: null, isLoading: false })
             toast.error(error?.response.data || error?.message)
         }
     },
@@ -156,10 +149,11 @@ export const useQuizStore = create((set, get) => ({
 
     getListOfShareQuiz: async (id) => {
         try {
+            set({ isLoading: true })
             const { data } = await api.get(`/quiz/share/${id}`);
-            set({ sharedQuizDetails: data })
+            set({ sharedQuizDetails: data, isLoading: false })
         } catch (error) {
-            set({ sharedQuizDetails: [] })
+            set({ sharedQuizDetails: [], isLoading: false })
             toast.error(error?.response.data || error?.message)
         }
     },
@@ -190,20 +184,22 @@ export const useQuizStore = create((set, get) => ({
     },
     getMyAttempts: async () => {
         try {
+            set({ isLoading: true })
             const { data } = await api.get("attempt/quiz/all");
-            set({ myAttempts: data })
+            set({ myAttempts: data, isLoading: false })
         } catch (error) {
-            set({ myAttempts: [] })
+            set({ myAttempts: [], isLoading: false })
             toast.error(error?.response.data || error?.message)
         }
     },
 
     getQuizzesSharedWithMe: async () => {
         try {
+            set({ isLoading: true })
             const { data } = await api.get("/quiz/share/all");
-            set({ sharedWithMeQuizzes: data })
+            set({ sharedWithMeQuizzes: data, isLoading: false })
         } catch (error) {
-            set({ sharedWithMeQuizzes: [] })
+            set({ sharedWithMeQuizzes: [], isLoading: false })
             toast.error(error?.response.data || error?.message)
         }
     }

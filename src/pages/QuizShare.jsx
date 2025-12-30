@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuizStore } from '../store/quizStore';
 import { Trash } from 'lucide-react';
+import PageLoader from '../components/PageLoader';
 
 function QuizShare() {
     const { id } = useParams();
-    const { getListOfShareQuiz, sharedQuizDetails, deleteShare, shareQuiz } = useQuizStore();
+    const { getListOfShareQuiz, sharedQuizDetails, deleteShare, shareQuiz, isLoading } = useQuizStore();
     const [email, setEmail] = useState("");
 
     useEffect(() => {
@@ -13,6 +14,10 @@ function QuizShare() {
             getListOfShareQuiz(id);
         }
     }, [id])
+
+    if (isLoading) {
+        return <PageLoader text="Loading quiz details..." />
+    }
 
     return (
         <div className='pt-20 xl:px-0 px-4 bg-blue-50'>
